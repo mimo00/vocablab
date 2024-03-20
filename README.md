@@ -1,4 +1,4 @@
-# flashcards
+# vocablab
 Application for learning vocabulary 
 
 # Use cases
