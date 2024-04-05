@@ -5,11 +5,7 @@ import { createFlashcard } from '@/app/lib/actions';
 export default async function Page() {
     return (
         <div>
-            <div></div>
-            Form to add flashcard
-            <div>
-                <Link href="/flashcards">Cancel</Link>
-            </div>
+            <div>Create flashcard</div>
             <form action={createFlashcard}>
                 <div>
                     <input
@@ -30,7 +26,12 @@ export default async function Page() {
                     />
                 </div>
                 <div>
-                    <button type="submit">Create fleshcard</button>
+                    <div>
+                        <Link href="/flashcards">Cancel</Link>
+                    </div>
+                    <div>
+                        <button type="submit">Create</button>
+                    </div>
                 </div>
             </form>
         </div>

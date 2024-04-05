@@ -8,10 +8,8 @@ export default async function Page() {
         <div>
             <div>
                 <div>
-                    List of recent worlds:
-                </div>
-                <div>
-                    <Link href="/flashcards/create">+</Link>
+                    {/*<input type="text" placeholder="Search flashcards ..."/>*/}
+                    <Link href="/flashcards/create">Create flashcard +</Link>
                 </div>
             </div>
             <div>
