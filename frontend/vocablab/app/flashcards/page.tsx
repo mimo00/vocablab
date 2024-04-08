@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { formatDateToLocal } from '@/app/lib/utils';
+import {BASE_URL, formatDateToLocal} from '@/app/lib/utils';
 
 export default async function Page() {
-    const flashcardsResponse = await fetch('http://localhost:8000/flashcards/flashcards/', {cache: 'no-store'});
+    const flashcardsResponse = await fetch(`${BASE_URL}/flashcards/flashcards/`, {cache: 'no-store'});
     const flashcards = await flashcardsResponse.json()
     return (
         <div>
