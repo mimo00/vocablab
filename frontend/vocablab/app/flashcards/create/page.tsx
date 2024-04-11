@@ -5,27 +5,29 @@ import { createFlashcard } from '@/app/lib/actions';
 export default async function Page() {
     return (
         <div>
-            <div>Create flashcard</div>
+            <div className="mb-2">
+                Create flashcard
+            </div>
             <form action={createFlashcard}>
-                <div>
+                <div className='mb-2'>
                     <input
                         id="front"
                         name="front"
                         type="text"
                         placeholder="Enter front of the fleshcard"
-                        className=""
+                        className="w-full"
                     />
                 </div>
-                <div>
+                <div className='mb-2'>
                     <input
                         id="back"
                         name="back"
                         type="text"
                         placeholder="Enter back of the fleshcard"
-                        className=""
+                        className="w-full"
                     />
                 </div>
-                <div>
+                <div className="flex justify-end gap-4">
                     <div>
                         <Link href="/flashcards">Cancel</Link>
                     </div>
