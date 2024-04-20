@@ -6,6 +6,7 @@ import {BASE_URL} from "@/app/lib/utils";
 
 export default function Page() {
     const router = useRouter()
+    const token = localStorage.getItem('token');
     const onSubmit = (formData) => {
         console.log(formData);
         const fleshcardData = {
@@ -14,7 +15,10 @@ export default function Page() {
         }
         fetch(`${BASE_URL}/flashcards/flashcards/`, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json',},
+            headers: {
+                'Authorization': `Token ${token}`,
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(fleshcardData),
         }).then((response) => {
             router.push("/flashcards");

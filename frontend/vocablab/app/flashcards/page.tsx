@@ -8,9 +8,19 @@ import { useRouter } from 'next/navigation'
 export default function Page() {
     const [flashcards, setFlashcards] = useState(null)
     const router = useRouter();
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
-        fetch(`${BASE_URL}/flashcards/flashcards/`, {cache: 'no-store'})
+        if (!token) {
+            router.push('/login');
+        }
+        fetch(
+            `${BASE_URL}/flashcards/flashcards/`, {
+                headers: {
+                  'Authorization': `Token ${token}`,
+                },
+                cache: 'no-store'
+            })
             .then((res) => res.json())
             .then((data) => {
                 setFlashcards(data)
@@ -19,10 +29,15 @@ export default function Page() {
                 console.error('Error:', error);
             });
     }, [])
+    const onLogout = () => {
+        localStorage.removeItem('token');
+        router.push('/login');
+    }
     const onTakeLearningSession = () => {
         fetch(`${BASE_URL}/flashcards/learning-sessions/`, {
             method: 'POST',
             headers: {
+                'Authorization': `Token ${token}`,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({}),
@@ -49,6 +64,9 @@ export default function Page() {
     return (
         <div>
             <div>
+                <div>
+                    <button onClick={onLogout}>Logout</button>
+                </div>
                 <div>
                     <button onClick={onTakeLearningSession}>Take a learning session</button>
                 </div>

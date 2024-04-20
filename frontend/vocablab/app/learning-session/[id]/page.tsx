@@ -1,17 +1,23 @@
 'use client'
 import {useEffect, useState} from "react";
 import {BASE_URL} from "@/app/lib/utils";
-import { useRouter } from 'next/navigation'
+import {useRouter} from 'next/navigation'
 import Link from "next/link";
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page({params}: { params: { id: string } }) {
     const [flashcards, setFlashcards] = useState(null)
     const [flashcardsToShow, setFlashcardsToShow] = useState(null)
     const [learningFlashcardIndex, setLearningFlashcardIndex] = useState(null)
     const [selectedId, setSelectedId] = useState(null)
+    const token = localStorage.getItem('token');
+
     const router = useRouter()
     useEffect(() => {
-        fetch(`${BASE_URL}/flashcards/learning-sessions/${params.id}/`)
+        fetch(`${BASE_URL}/flashcards/learning-sessions/${params.id}/`, {
+            headers: {
+                'Authorization': `Token ${token}`,
+            },
+        })
             .then((res) => res.json())
             .then((data) => {
                 setFlashcards(data.flashcards)
@@ -44,7 +50,7 @@ export default function Page({ params }: { params: { id: string } }) {
         return arrayCopy;
     }
     const onNext = () => {
-        if (!isLastAnswer()){
+        if (!isLastAnswer()) {
             setLearningFlashcardIndex(learningFlashcardIndex + 1)
             setFlashcardsToShow(shuffleArray(flashcardsToShow))
             setSelectedId(null)
@@ -53,18 +59,19 @@ export default function Page({ params }: { params: { id: string } }) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Token ${token}`,
                 },
                 body: JSON.stringify({
                     learning_session: params.id,
                 }),
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
             router.push("/flashcards")
         }
 

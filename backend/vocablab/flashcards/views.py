@@ -10,7 +10,15 @@ from rest_framework import filters
 from flashcards.services import get_flashcards_for_learning_session, InsufficientFlashcardsError
 
 
+class UserInContexMixin:
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["user"] = self.request.user
+        return context
+
+
 class FlashcardViewSet(
+    UserInContexMixin,
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
@@ -18,13 +26,16 @@ class FlashcardViewSet(
     GenericViewSet
 ):
     serializer_class = FlashcardSerializer
-    queryset = Flashcard.objects.all()
     filter_backends = [filters.OrderingFilter]
     ordering_fields = '__all__'
     ordering = ["-created"]
 
+    def get_queryset(self):
+        return Flashcard.objects.filter(user=self.request.user)
+
 
 class LearningSessionViewSet(
+    UserInContexMixin,
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
     GenericViewSet,

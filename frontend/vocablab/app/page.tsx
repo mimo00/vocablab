@@ -6,7 +6,7 @@ export default function Page() {
     <div>
       Welcome
       <div>
-        <Link href="/flashcards">Flashcards</Link>
+        <Link href="/login">Login</Link>
       </div>
     </div>
     </main>

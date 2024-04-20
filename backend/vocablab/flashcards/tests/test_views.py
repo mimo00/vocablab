@@ -4,7 +4,7 @@ import pytest
 from django.urls import reverse
 from rest_framework import status
 
-from flashcards.tests.factories import FlashcardFactory
+from flashcards.tests.factories import FlashcardFactory, UserFactory
 
 
 @pytest.mark.django_db
@@ -36,13 +36,24 @@ class TestFlashcardViewSet:
         assert result["back"] == flashcard.back
         assert result["created"] == mock.ANY  # TODO set dt format
 
+    def test_list_return_only_users_flashcards(self, api_client, user, other_user):
+        FlashcardFactory(user=user)
+        FlashcardFactory(user=other_user)
+
+        url = reverse(self.LIST_VIEW_NAME)
+        response = api_client.get(path=url)
+
+        assert response.status_code == status.HTTP_200_OK
+        results = response.json()
+        assert len(results) == 1
+
 
 @pytest.mark.django_db
 class TestLearningSessionViewSet:
     LIST_VIEW_NAME = "flashcards:learningsession-list"
 
     def test_post(self, api_client):
-        factories = FlashcardFactory.create_batch(4)
+        FlashcardFactory.create_batch(4)
         data = {}
 
         url = reverse(self.LIST_VIEW_NAME)

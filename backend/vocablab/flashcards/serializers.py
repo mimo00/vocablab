@@ -3,14 +3,20 @@ from rest_framework import serializers
 from flashcards.models import Flashcard, LearningSession, LearningSessionCompletedEvent
 
 
-class FlashcardSerializer(serializers.ModelSerializer):
+class UserInValidatedDataMixin:
+    def create(self, validated_data):
+        validated_data["user"] = self.context["user"]
+        return super().create(validated_data)
+
+
+class FlashcardSerializer(UserInValidatedDataMixin, serializers.ModelSerializer):
     class Meta:
         model = Flashcard
         fields = ['id', 'front', 'back', 'created']
         read_only_fields = ('created', )
 
 
-class LearningSessionSerializer(serializers.ModelSerializer):
+class LearningSessionSerializer(UserInValidatedDataMixin, serializers.ModelSerializer):
     flashcards = FlashcardSerializer(many=True, required=False)
 
     class Meta:
