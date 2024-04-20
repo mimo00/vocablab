@@ -1,14 +1,33 @@
+'use client'
 import Link from "next/link";
-import { createFlashcard } from '@/app/lib/actions';
+import {redirect, useRouter} from "next/navigation";
+import {BASE_URL} from "@/app/lib/utils";
 
 
-export default async function Page() {
+export default function Page() {
+    const router = useRouter()
+    const onSubmit = (formData) => {
+        console.log(formData);
+        const fleshcardData = {
+            front: formData.get('front'),
+            back: formData.get('back')
+        }
+        fetch(`${BASE_URL}/flashcards/flashcards/`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json',},
+            body: JSON.stringify(fleshcardData),
+        }).then((response) => {
+            router.push("/flashcards");
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    }
     return (
         <div>
             <div className="mb-2">
                 Create flashcard
             </div>
-            <form action={createFlashcard}>
+            <form action={onSubmit}>
                 <div className='mb-2'>
                     <input
                         id="front"
