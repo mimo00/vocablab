@@ -1,17 +1,18 @@
 'use client'
 import {useState} from "react";
-import {BASE_URL} from "@/app/lib/utils";
 import {useRouter} from "next/navigation";
+import {BASE_URL} from "@/app/lib/utils";
 import Link from "next/link";
 
 export default function Page() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [passwordRepetition, setPasswordRepetition] = useState('')
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
+    const [passwordRepetitionError, setPasswordRepetitionError] = useState('')
     const router = useRouter()
     const onButtonClick = () => {
-        // Set initial error values to empty
         setEmailError('')
         setPasswordError('')
         // Check if the user has entered both fields correctly
@@ -31,30 +32,38 @@ export default function Page() {
             setPasswordError('The password must be 8 characters or longer')
             return
         }
+        if (passwordRepetition !== password) {
+            setPasswordError('Passwords')
+            return
+        }
         const data = {
             username: email,
             password
         }
-        fetch(`${BASE_URL}/auth/token/login/`, {
+        fetch(`${BASE_URL}/auth/users/`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json',},
             body: JSON.stringify(data),
         }).then((res) => {
-            if (res.status !== 200) {
-                throw new Error('Wrong email or password');
+            if (res.status !== 201) {
+                return res.json().then(data => {
+                    const error = new Error('Can not create an user');
+                    error.data = data;
+                    throw error;
+                });
             }
             return res.json();
         }).then((data) => {
-            localStorage.setItem('token', data.auth_token);
-            router.push("/flashcards");
+            router.push("/login");
         }).catch(error => {
-            console.error('Error:', error);
-            window.alert('Wrong email or password');
+            const data = JSON.stringify(error.data)
+            console.error('Error:', data);
+            window.alert(data);
         });
     }
     return (
         <div>
-            Login
+            Create an account
             <div>
                 <div>
                     <input
@@ -74,12 +83,21 @@ export default function Page() {
                     <label>{passwordError}</label>
                 </div>
                 <div>
-                    <input type="button" onClick={onButtonClick} value={'Log in'}/>
+                    <input
+                        value={passwordRepetition}
+                        type="password"
+                        placeholder="Repeat your password here"
+                        onChange={(ev) => setPasswordRepetition(ev.target.value)}
+                    />
+                    <label>{passwordRepetitionError}</label>
+                </div>
+                <div>
+                    <input type="button" onClick={onButtonClick} value={'Create an account'}/>
                 </div>
             </div>
             <div>
                 <Link href="/">Cancel</Link>
             </div>
         </div>
-    );
+    )
 }
