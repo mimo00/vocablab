@@ -4,6 +4,7 @@ import Link from "next/link";
 import {BASE_URL, formatDateToLocal} from '@/app/lib/utils';
 import {useEffect, useState} from "react";
 import { useRouter } from 'next/navigation'
+import {PlusIcon} from "@heroicons/react/24/solid";
 
 export default function Page() {
     const [flashcards, setFlashcards] = useState(null)
@@ -71,28 +72,33 @@ export default function Page() {
                     <button onClick={onTakeLearningSession}>Take a learning session</button>
                 </div>
                 <div>
-                    {/*<input type="text" placeholder="Search flashcards ..."/>*/}
-                    <Link href="/flashcards/create">Create flashcard +</Link>
+                    <Link
+                        href="/flashcards/create"
+                        className={'flex h-10 items-center max-w-xs rounded-lg bg-stone-900 px-4 text-white'}
+                    >
+                        <span>Create flashcard</span>
+                        <PlusIcon className="h-5" />
+                    </Link>
                 </div>
             </div>
-            <div>
-                <table>
-                    <thead>
+            <div className={'bg-gray-100 rounded-lg p-3'}>
+                <table className={'min-w-full text-gray-900'}>
+                    <thead className={'text-left'}>
                     <tr>
-                        <th>front</th>
-                        <th>back</th>
-                        <th>created</th>
-                        <th>actions</th>
-                        </tr>
+                        <th className={'font-medium px-4 py-5'}>front</th>
+                        <th className={'font-medium px-4 py-5'}>back</th>
+                        <th className={'font-medium px-4 py-5'}>created</th>
+                        <th className={'font-medium px-4 py-5'}>actions</th>
+                    </tr>
                     </thead>
-                    <tbody>
+                    <tbody className={'bg-white'}>
                     {
                         flashcards ? flashcards.map(flashcard => (
-                            <tr key={flashcard.id}>
-                                <td>{flashcard.front}</td>
-                                <td>{flashcard.back}</td>
-                                <td>{formatDateToLocal(flashcard.created)}</td>
-                                <td><button onClick={() => onDelete(flashcard.id)}>delete</button></td>
+                            <tr className={'w-full py-3 border-b'} key={flashcard.id}>
+                                <td className={'whitespace-nowrap pl-3 py-3'}>{flashcard.front}</td>
+                                <td className={'whitespace-nowrap pl-3 py-3'}>{flashcard.back}</td>
+                                <td className={'whitespace-nowrap pl-3 py-3'}>{formatDateToLocal(flashcard.created)}</td>
+                                <td className={'whitespace-nowrap pl-3 py-3'}><button onClick={() => onDelete(flashcard.id)}>delete</button></td>
                             </tr>
                         )) : <tr>
                             <td>Loading...</td>
