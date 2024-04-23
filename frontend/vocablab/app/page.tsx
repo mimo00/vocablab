@@ -55,34 +55,35 @@ export default function Page() {
     return (
         <main className={'flex justify-evenly items-center h-full'}>
             <div>
-                <div>Vocablab</div>
+                <div className={'text-5xl'}>Vocablab</div>
                 <div>Extend your vocabulary. Collect, manage & learn.</div>
             </div>
-            <div>
-                <div>
+            <div className={'border p-10 rounded-2xl'}>
+                <div className={'border-b'}>
                     <div>
                         <input
                             value={email}
-                            placeholder="Enter your email here"
+                            placeholder="Email"
                             onChange={(ev) => setEmail(ev.target.value)}
                         />
                         <label>{emailError}</label>
                     </div>
-                    <div>
+                    <div className={'mt-3'}>
                         <input
                             value={password}
                             type="password"
-                            placeholder="Enter your password here"
+                            placeholder="Password"
                             onChange={(ev) => setPassword(ev.target.value)}
                         />
                         <label>{passwordError}</label>
                     </div>
-                    <div>
-                        <input type="button" onClick={onButtonClick} value={'Log in'}/>
+                    <div className={'flex justify-center my-3 rounded-lg bg-stone-900 text-white py-3'}>
+                        <button type="button" onClick={onButtonClick}>
+                            Log in
+                        </button>
                     </div>
-
                 </div>
-                <div>
+                <div className={'flex justify-center mt-3'}>
                     <Link href="/register">Create new account</Link>
                 </div>
             </div>
