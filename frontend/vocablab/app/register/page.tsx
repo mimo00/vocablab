@@ -54,7 +54,7 @@ export default function Page() {
             }
             return res.json();
         }).then((data) => {
-            router.push("/login");
+            router.push("/");
         }).catch(error => {
             const data = JSON.stringify(error.data)
             console.error('Error:', data);

@@ -13,7 +13,7 @@ export default function Page() {
 
     useEffect(() => {
         if (!token) {
-            router.push('/login');
+            router.push('/');
         }
         fetch(
             `${BASE_URL}/flashcards/flashcards/`, {
@@ -32,7 +32,7 @@ export default function Page() {
     }, [])
     const onLogout = () => {
         localStorage.removeItem('token');
-        router.push('/login');
+        router.push('/');
     }
     const onTakeLearningSession = () => {
         fetch(`${BASE_URL}/flashcards/learning-sessions/`, {
