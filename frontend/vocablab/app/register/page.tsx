@@ -62,42 +62,45 @@ export default function Page() {
         });
     }
     return (
-        <div>
-            Create an account
+        <div className={'flex justify-center h-full items-center'}>
             <div>
+                Create an account
                 <div>
-                    <input
-                        value={email}
-                        placeholder="Enter your email here"
-                        onChange={(ev) => setEmail(ev.target.value)}
-                    />
-                    <label>{emailError}</label>
+                    <div>
+                        <input
+                            value={email}
+                            placeholder="Enter your email here"
+                            onChange={(ev) => setEmail(ev.target.value)}
+                        />
+                        <label>{emailError}</label>
+                    </div>
+                    <div>
+                        <input
+                            value={password}
+                            type="password"
+                            placeholder="Enter your password here"
+                            onChange={(ev) => setPassword(ev.target.value)}
+                        />
+                        <label>{passwordError}</label>
+                    </div>
+                    <div>
+                        <input
+                            value={passwordRepetition}
+                            type="password"
+                            placeholder="Repeat your password here"
+                            onChange={(ev) => setPasswordRepetition(ev.target.value)}
+                        />
+                        <label>{passwordRepetitionError}</label>
+                    </div>
+                    <div>
+                        <input type="button" onClick={onButtonClick} value={'Create an account'}/>
+                    </div>
                 </div>
                 <div>
-                    <input
-                        value={password}
-                        type="password"
-                        placeholder="Enter your password here"
-                        onChange={(ev) => setPassword(ev.target.value)}
-                    />
-                    <label>{passwordError}</label>
+                    <Link href="/">Cancel</Link>
                 </div>
-                <div>
-                    <input
-                        value={passwordRepetition}
-                        type="password"
-                        placeholder="Repeat your password here"
-                        onChange={(ev) => setPasswordRepetition(ev.target.value)}
-                    />
-                    <label>{passwordRepetitionError}</label>
-                </div>
-                <div>
-                    <input type="button" onClick={onButtonClick} value={'Create an account'}/>
-                </div>
-            </div>
-            <div>
-                <Link href="/">Cancel</Link>
             </div>
         </div>
+
     )
 }
