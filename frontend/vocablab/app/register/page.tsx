@@ -63,40 +63,40 @@ export default function Page() {
     }
     return (
         <div className={'flex justify-center h-full items-center'}>
-            <div>
-                Create an account
-                <div>
+            <div className={'border p-10 rounded-2xl'}>
+                <div className={'text-center'}>Create new account</div>
+                <div className={'mt-3'}>
                     <div>
                         <input
                             value={email}
-                            placeholder="Enter your email here"
+                            placeholder="Email"
                             onChange={(ev) => setEmail(ev.target.value)}
                         />
                         <label>{emailError}</label>
                     </div>
-                    <div>
+                    <div className={'mt-2'}>
                         <input
                             value={password}
                             type="password"
-                            placeholder="Enter your password here"
+                            placeholder="Password"
                             onChange={(ev) => setPassword(ev.target.value)}
                         />
                         <label>{passwordError}</label>
                     </div>
-                    <div>
+                    <div className={'mt-2'}>
                         <input
                             value={passwordRepetition}
                             type="password"
-                            placeholder="Repeat your password here"
+                            placeholder="Password repetition"
                             onChange={(ev) => setPasswordRepetition(ev.target.value)}
                         />
                         <label>{passwordRepetitionError}</label>
                     </div>
-                    <div>
+                    <div className={'flex justify-center my-3 rounded-lg bg-stone-900 text-white py-3'}>
                         <input type="button" onClick={onButtonClick} value={'Create an account'}/>
                     </div>
                 </div>
-                <div>
+                <div className={'text-center'}>
                     <Link href="/">Cancel</Link>
                 </div>
             </div>
