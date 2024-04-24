@@ -82,28 +82,33 @@ export default function Page({params}: { params: { id: string } }) {
     }
 
     return (
-        <div>
-            <div>
-                <Link href="/flashcards">Cancel</Link>
-            </div>
-            <div>
-                {flashcards[learningFlashcardIndex].front}
-            </div>
-            <div>
-                <div className="flex gap-4">
-                    {flashcardsToShow && flashcardsToShow.map(flashcard =>
-                        (<button
-                            key={flashcard.id}
-                            style={{backgroundColor: getColor(flashcard.id)}}
-                            onClick={() => handleClick(flashcard.id)}
-                        >
-                            {flashcard.back}
-                        </button>)
-                    )}
+        <div className={'flex justify-center h-full items-center'}>
+            <div className={'border p-10 rounded-2xl'}>
+                <div className={'border-b'}>
+                    <div className={'text-center'}>
+                        {flashcards[learningFlashcardIndex].front}
+                    </div>
+                    <div className="flex gap-4 my-6">
+                        {flashcardsToShow && flashcardsToShow.map(flashcard =>
+                            (<button
+                                key={flashcard.id}
+                                style={{backgroundColor: getColor(flashcard.id)}}
+                                onClick={() => handleClick(flashcard.id)}
+                                className={'border p-5 rounded-xl'}
+                            >
+                                {flashcard.back}
+                            </button>)
+                        )}
+                    </div>
                 </div>
-                <button onClick={onNext} disabled={selectedId != flashcards[learningFlashcardIndex].id}>
-                    {isLastAnswer() ? 'Finish' : 'Next'}
-                </button>
+                <div className={'flex justify-center my-3 rounded-lg bg-stone-900 text-white py-3'}>
+                    <button onClick={onNext} disabled={selectedId != flashcards[learningFlashcardIndex].id}>
+                        {isLastAnswer() ? 'Finish' : 'Next'}
+                    </button>
+                </div>
+                <div className={'text-center'}>
+                    <Link href="/flashcards">Cancel</Link>
+                </div>
             </div>
         </div>
     );

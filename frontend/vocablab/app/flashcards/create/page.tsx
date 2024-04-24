@@ -27,38 +27,36 @@ export default function Page() {
         });
     }
     return (
-        <div>
-            <div className="mb-2">
-                Create flashcard
-            </div>
-            <form action={onSubmit}>
-                <div className='mb-2'>
-                    <input
-                        id="front"
-                        name="front"
-                        type="text"
-                        placeholder="Enter front of the fleshcard"
-                        className="w-full"
-                    />
+        <div className={'flex justify-center h-full items-center'}>
+            <div className={'border p-10 rounded-2xl'}>
+                <div className="text-center">
+                    Create flashcard
                 </div>
-                <div className='mb-2'>
-                    <input
-                        id="back"
-                        name="back"
-                        type="text"
-                        placeholder="Enter back of the fleshcard"
-                        className="w-full"
-                    />
-                </div>
-                <div className="flex justify-end gap-4">
-                    <div>
-                        <Link href="/flashcards">Cancel</Link>
+                <form action={onSubmit} className={'mt-3'}>
+                    <div className='mb-2'>
+                        <input
+                            id="front"
+                            name="front"
+                            type="text"
+                            placeholder="Front"
+                        />
                     </div>
-                    <div>
+                    <div className='mb-2'>
+                        <input
+                            id="back"
+                            name="back"
+                            type="text"
+                            placeholder="Back"
+                        />
+                    </div>
+                    <div className={'flex justify-center my-3 rounded-lg bg-stone-900 text-white py-3'}>
                         <button type="submit">Create</button>
                     </div>
-                </div>
-            </form>
+                    <div className={'text-center'}>
+                        <Link href="/flashcards">Cancel</Link>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }
