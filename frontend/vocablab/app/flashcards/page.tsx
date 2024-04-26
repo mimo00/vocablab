@@ -54,6 +54,9 @@ export default function Page() {
     const onDelete = (id) => {
         fetch(`${BASE_URL}/flashcards/flashcards/${id}/`, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Token ${token}`,
+            }
         })
         .then(() => {
             setFlashcards(flashcards.filter(flashcard => flashcard.id !== id));
