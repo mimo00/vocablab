@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {BASE_URL} from "@/app/lib/utils";
 import {useRouter} from 'next/navigation'
 import Link from "next/link";
+import clsx from 'clsx';
 
 export default function Page({params}: { params: { id: string } }) {
     const [flashcards, setFlashcards] = useState(null)
@@ -101,11 +102,19 @@ export default function Page({params}: { params: { id: string } }) {
                         )}
                     </div>
                 </div>
-                <div className={'flex justify-center my-3 rounded-lg bg-stone-900 text-white py-3'}>
-                    <button onClick={onNext} disabled={selectedId != flashcards[learningFlashcardIndex].id}>
-                        {isLastAnswer() ? 'Finish' : 'Next'}
-                    </button>
-                </div>
+                <button
+                    className={clsx(
+                        'flex justify-center w-full my-3 rounded-lg  text-white py-3',
+                        {
+                            'bg-stone-900': isRightAnswer(),
+                            'bg-stone-400': !isRightAnswer()
+                        }
+                        )}
+                    onClick={onNext}
+                    disabled={!isRightAnswer()}
+                >
+                    {isLastAnswer() ? 'Finish' : 'Next'}
+                </button>
                 <div className={'text-center'}>
                     <Link href="/flashcards">Cancel</Link>
                 </div>

@@ -72,7 +72,7 @@ export default function Page() {
                             placeholder="Email"
                             onChange={(ev) => setEmail(ev.target.value)}
                         />
-                        <label>{emailError}</label>
+                        <div>{emailError}</div>
                     </div>
                     <div className={'mt-2'}>
                         <input
@@ -81,7 +81,7 @@ export default function Page() {
                             placeholder="Password"
                             onChange={(ev) => setPassword(ev.target.value)}
                         />
-                        <label>{passwordError}</label>
+                        <div>{passwordError}</div>
                     </div>
                     <div className={'mt-2'}>
                         <input
@@ -90,11 +90,14 @@ export default function Page() {
                             placeholder="Password repetition"
                             onChange={(ev) => setPasswordRepetition(ev.target.value)}
                         />
-                        <label>{passwordRepetitionError}</label>
+                        <div>{passwordRepetitionError}</div>
                     </div>
-                    <div className={'flex justify-center my-3 rounded-lg bg-stone-900 text-white py-3'}>
-                        <input type="button" onClick={onButtonClick} value={'Create an account'}/>
-                    </div>
+                    <button
+                        className={'flex justify-center my-3 rounded-lg bg-stone-900 text-white py-3 w-full'}
+                        onClick={onButtonClick}
+                    >
+                        Create an account
+                    </button>
                 </div>
                 <div className={'text-center'}>
                     <Link href="/">Cancel</Link>

@@ -118,7 +118,7 @@ export default function Page() {
                     onClick={onTakeLearningSession}
                     className={'flex h-10 items-center rounded-lg bg-stone-900 px-4 text-white'}
                 >
-                    Learn!
+                    Learn
                 </button>
             </div>
         </div>

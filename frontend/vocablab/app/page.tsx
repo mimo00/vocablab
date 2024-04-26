@@ -77,11 +77,13 @@ export default function Page() {
                         />
                         <label>{passwordError}</label>
                     </div>
-                    <div className={'flex justify-center my-3 rounded-lg bg-stone-900 text-white py-3'}>
-                        <button type="button" onClick={onButtonClick}>
-                            Log in
-                        </button>
-                    </div>
+                    <button
+                        className={'flex justify-center my-3 rounded-lg bg-stone-900 text-white py-3 w-full'}
+                        type="button"
+                        onClick={onButtonClick}
+                    >
+                        Log in
+                    </button>
                 </div>
                 <div className={'flex justify-center mt-3'}>
                     <Link href="/register">Create new account</Link>
