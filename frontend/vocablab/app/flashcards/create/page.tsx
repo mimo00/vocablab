@@ -49,9 +49,9 @@ export default function Page() {
                             placeholder="Back"
                         />
                     </div>
-                    <div className={'flex justify-center my-3 rounded-lg bg-stone-900 text-white py-3'}>
-                        <button type="submit">Create</button>
-                    </div>
+                    <button className={'flex justify-center my-3 rounded-lg bg-stone-900 text-white py-3 w-full'} type="submit">
+                        Create
+                    </button>
                     <div className={'text-center'}>
                         <Link href="/flashcards">Cancel</Link>
                     </div>
