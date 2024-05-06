@@ -2,7 +2,10 @@
 Application for learning vocabulary 
 
 # Check out the app
-#TODO
+### App
+[vocablab.michalmokrogulski.com](http://vocablab.michalmokrogulski.com/)
+### Admin
+[vocablab.backend.michalmokrogulski.com](http://vocablab.backend.michalmokrogulski.com/)
 
 # Use cases
 1. Create a new account
