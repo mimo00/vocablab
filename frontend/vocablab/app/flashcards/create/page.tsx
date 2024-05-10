@@ -6,9 +6,8 @@ import {BASE_URL} from "@/app/lib/utils";
 
 export default function Page() {
     const router = useRouter()
-    const token = localStorage.getItem('token');
-    const onSubmit = (formData) => {
-        console.log(formData);
+    const onSubmit = (formData: FormData) => {
+        const token = localStorage.getItem('token');
         const fleshcardData = {
             front: formData.get('front'),
             back: formData.get('back')
@@ -21,8 +20,14 @@ export default function Page() {
             },
             body: JSON.stringify(fleshcardData),
         }).then((response) => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    throw new Error(JSON.stringify(data));
+                });
+            }
             router.push("/flashcards");
         }).catch(error => {
+            window.alert(error);
             console.error('Error:', error);
         });
     }

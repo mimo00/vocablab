@@ -9,10 +9,10 @@ Application for learning vocabulary
 
 # Use cases
 1. Create a new account
-2. Login to panel
+2. Login to the app
 3. Insert new flashcard
 4. List all flashcards
-5. Do the lesson
+5. Take a learning lesson
 
 
 # Used technologies

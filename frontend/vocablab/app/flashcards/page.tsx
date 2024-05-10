@@ -1,17 +1,18 @@
-'use client'
+"use client";
 
 import Link from "next/link";
 import {BASE_URL, formatDateToLocal} from '@/app/lib/utils';
 import {useEffect, useState} from "react";
 import { useRouter } from 'next/navigation'
 import {PlusIcon, ArrowLeftOnRectangleIcon, TrashIcon} from "@heroicons/react/24/solid";
+import { Flashcard } from '@/app/lib/definitions';
 
 export default function Page() {
-    const [flashcards, setFlashcards] = useState(null)
+    const [flashcards, setFlashcards] = useState<Flashcard[]>([])
     const router = useRouter();
-    const token = localStorage.getItem('token');
 
     useEffect(() => {
+        const token = localStorage.getItem('token');
         if (!token) {
             router.push('/');
         }
@@ -35,6 +36,7 @@ export default function Page() {
         router.push('/');
     }
     const onTakeLearningSession = () => {
+        const token = localStorage.getItem('token');
         fetch(`${BASE_URL}/flashcards/learning-sessions/`, {
             method: 'POST',
             headers: {
@@ -51,7 +53,8 @@ export default function Page() {
             console.error('Error:', error);
         });
     }
-    const onDelete = (id) => {
+    const onDelete = (id: string) => {
+        const token = localStorage.getItem('token');
         fetch(`${BASE_URL}/flashcards/flashcards/${id}/`, {
             method: 'DELETE',
             headers: {
@@ -59,7 +62,9 @@ export default function Page() {
             }
         })
         .then(() => {
-            setFlashcards(flashcards.filter(flashcard => flashcard.id !== id));
+            if (flashcards) {
+                setFlashcards(flashcards.filter(flashcard => flashcard.id !== id));
+            }
         })
         .catch(error => {
             console.error('Error:', error);

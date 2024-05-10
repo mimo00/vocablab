@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import {BASE_URL} from "@/app/lib/utils";
 
@@ -10,6 +10,11 @@ export default function Page() {
     const [emailError, setEmailError] = useState('')
     const [passwordError, setPasswordError] = useState('')
     const router = useRouter()
+    useEffect(() => {
+        if (localStorage.getItem('token')){
+            router.push("/flashcards");
+        }
+    })
     const onButtonClick = () => {
         // Set initial error values to empty
         setEmailError('')

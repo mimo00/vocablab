@@ -47,8 +47,7 @@ export default function Page() {
         }).then((res) => {
             if (res.status !== 201) {
                 return res.json().then(data => {
-                    const error = new Error('Can not create an user');
-                    error.data = data;
+                    const error = new Error(data);
                     throw error;
                 });
             }
@@ -56,7 +55,7 @@ export default function Page() {
         }).then((data) => {
             router.push("/");
         }).catch(error => {
-            const data = JSON.stringify(error.data)
+            const data = JSON.stringify(error)
             console.error('Error:', data);
             window.alert(data);
         });

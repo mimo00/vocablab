@@ -4,12 +4,13 @@ import {BASE_URL} from "@/app/lib/utils";
 import {useRouter} from 'next/navigation'
 import Link from "next/link";
 import clsx from 'clsx';
+import {Flashcard} from "@/app/lib/definitions";
 
 export default function Page({params}: { params: { id: string } }) {
-    const [flashcards, setFlashcards] = useState(null)
-    const [flashcardsToShow, setFlashcardsToShow] = useState(null)
-    const [learningFlashcardIndex, setLearningFlashcardIndex] = useState(null)
-    const [selectedId, setSelectedId] = useState(null)
+    const [flashcards, setFlashcards] = useState<Flashcard[]>([])
+    const [flashcardsToShow, setFlashcardsToShow] = useState<Flashcard[]>([])
+    const [learningFlashcardIndex, setLearningFlashcardIndex] = useState(0)
+    const [selectedId, setSelectedId] = useState<null | string>(null)
     const token = localStorage.getItem('token');
 
     const router = useRouter()
@@ -32,17 +33,17 @@ export default function Page({params}: { params: { id: string } }) {
     const isLastAnswer = () => {
         return learningFlashcardIndex == flashcards.length - 1
     }
-    const handleClick = (selected) => {
+    const handleClick = (selected: string) => {
         setSelectedId(selected)
     }
-    const getColor = (flashcardId) => {
+    const getColor = (flashcardId: string) => {
         if (selectedId != flashcardId)
             return 'white';
         else {
             return isRightAnswer() ? 'green' : 'red'
         }
     }
-    const shuffleArray = (array) => {
+    const shuffleArray = (array: Flashcard[]) => {
         const arrayCopy = [...array];
         for (let i = arrayCopy.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -78,7 +79,7 @@ export default function Page({params}: { params: { id: string } }) {
 
     }
 
-    if (flashcards === null) {
+    if (flashcards.length === 0) {
         return <div>Loading...</div>;
     }
 
