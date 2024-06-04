@@ -11,4 +11,5 @@ router.register(r'learning-sessions-completed-event', views.LearningSessionCompl
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('statistics/', views.StatsListView.as_view()),
 ]

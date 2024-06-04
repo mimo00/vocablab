@@ -1,7 +1,7 @@
 import factory
 
 from django.conf import settings
-from flashcards.models import Flashcard
+from flashcards.models import Flashcard, LearningSession
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -19,3 +19,10 @@ class FlashcardFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
     front = factory.Faker("word")
     back = factory.Faker("word")
+
+
+class LearningSessionFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = LearningSession
+
+    user = factory.SubFactory(UserFactory)

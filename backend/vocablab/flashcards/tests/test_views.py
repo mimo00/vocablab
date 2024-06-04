@@ -4,7 +4,7 @@ import pytest
 from django.urls import reverse
 from rest_framework import status
 
-from flashcards.tests.factories import FlashcardFactory, UserFactory
+from flashcards.tests.factories import FlashcardFactory, UserFactory, LearningSessionFactory
 
 
 @pytest.mark.django_db
@@ -73,3 +73,18 @@ class TestLearningSessionViewSet:
         assert response.status_code == status.HTTP_400_BAD_REQUEST, response.data
         result = response.json()
         assert result == ['Only 0 flashcards available, but 4 were requested.']
+
+
+@pytest.mark.django_db
+class TestLearningSessionCompletedEventViewSet:
+    LIST_VIEW_NAME = "flashcards:learningsessioncompletedevent-list"
+
+    def test_post(self, api_client):
+        learning_session = LearningSessionFactory()
+
+        data = {"learning_session": learning_session.pk}
+
+        url = reverse(self.LIST_VIEW_NAME)
+        response = api_client.post(path=url, data=data)
+
+        assert response.status_code == status.HTTP_201_CREATED, response.data

@@ -1,5 +1,7 @@
-from rest_framework import mixins
+from rest_framework import mixins, status
 from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
 from flashcards.models import Flashcard, LearningSession, LearningSessionCompletedEvent
@@ -7,7 +9,7 @@ from flashcards.serializers import FlashcardSerializer, LearningSessionSerialize
     LearningSessionCompletedEventSerializer
 from rest_framework import filters
 
-from flashcards.services import get_flashcards_for_learning_session, InsufficientFlashcardsError
+from flashcards.services import get_flashcards_for_learning_session, InsufficientFlashcardsError, get_statistics
 
 
 class UserInContexMixin:
@@ -45,7 +47,7 @@ class LearningSessionViewSet(
 
     def perform_create(self, serializer):
         try:
-            flashcards = get_flashcards_for_learning_session()
+            flashcards = get_flashcards_for_learning_session(user=self.request.user)
         except InsufficientFlashcardsError as e:
             raise ValidationError(e)
         super().perform_create(serializer)
@@ -59,3 +61,8 @@ class LearningSessionCompletedEventViewSet(
     serializer_class = LearningSessionCompletedEventSerializer
     queryset = LearningSessionCompletedEvent.objects.all()
 
+
+class StatsListView(APIView):
+    def get(self, request, format=None):
+        statistics = get_statistics(request.user)
+        return Response(statistics, status=status.HTTP_200_OK)

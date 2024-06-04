@@ -5,10 +5,16 @@ import {BASE_URL, formatDateToLocal} from '@/app/lib/utils';
 import {useEffect, useState} from "react";
 import { useRouter } from 'next/navigation'
 import {PlusIcon, ArrowLeftOnRectangleIcon, TrashIcon} from "@heroicons/react/24/solid";
-import { Flashcard } from '@/app/lib/definitions';
+import {Flashcard, LearningStatistics} from '@/app/lib/definitions';
 
 export default function Page() {
     const [flashcards, setFlashcards] = useState<Flashcard[]>([])
+    const [learningStatistics, setLearningStatistics] = useState<LearningStatistics>({
+        flashcards_created_last_seven_days: 0,
+        flashcards_created_today: 0,
+        learning_sessions_completed_last_seven_days: 0,
+        learning_sessions_completed_today: 0,
+    })
     const router = useRouter();
 
     useEffect(() => {
@@ -26,6 +32,20 @@ export default function Page() {
             .then((res) => res.json())
             .then((data) => {
                 setFlashcards(data)
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        fetch(
+            `${BASE_URL}/flashcards/statistics/`, {
+                headers: {
+                  'Authorization': `Token ${token}`,
+                },
+                cache: 'no-store'
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                setLearningStatistics(data)
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -81,7 +101,20 @@ export default function Page() {
                         </div>
                     </button>
                 </div>
-                <div className={'flex justify-end mt-3'}>
+                <div>
+                    <div>Flashcards created today: {learningStatistics.flashcards_created_today}</div>
+                    <div>Flashcards created last 7 days: {learningStatistics.flashcards_created_last_seven_days}</div>
+                    <div>Learning sessions completed today: {learningStatistics.learning_sessions_completed_today}</div>
+                    <div>Learning sessions completed last 7
+                        days: {learningStatistics.learning_sessions_completed_last_seven_days}</div>
+                </div>
+                <div className={'flex justify-between mt-3'}>
+                    <button
+                        onClick={onTakeLearningSession}
+                        className={'flex h-10 items-center rounded-lg bg-stone-900 px-4 text-white'}
+                    >
+                        Learn
+                    </button>
                     <Link
                         href="/flashcards/create"
                         className={'flex h-10 items-center rounded-lg bg-stone-900 px-4 text-white'}
@@ -122,12 +155,7 @@ export default function Page() {
                 </table>
             </div>
             <div className={'flex justify-center mt-6'}>
-                <button
-                    onClick={onTakeLearningSession}
-                    className={'flex h-10 items-center rounded-lg bg-stone-900 px-4 text-white'}
-                >
-                    Learn
-                </button>
+
             </div>
         </div>
     );
