@@ -8,7 +8,7 @@ import {PlusIcon, ArrowLeftOnRectangleIcon, TrashIcon} from "@heroicons/react/24
 import {Flashcard, LearningStatistics} from '@/app/lib/definitions';
 
 
-export function Card({
+function Card({
   title,
   value,
 }: {
