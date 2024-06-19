@@ -144,7 +144,7 @@ export default function Page() {
                           value={learningStatistics.flashcards_created_last_seven_days}/>
                     <Card title="Learning sessions completed today"
                           value={learningStatistics.learning_sessions_completed_today}/>
-                    <Card title="Learning sessions completed last 7"
+                    <Card title="Learning sessions completed last 7 days"
                           value={learningStatistics.learning_sessions_completed_last_seven_days}/>
                 </div>
             </div>
