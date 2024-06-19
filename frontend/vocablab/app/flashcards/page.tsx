@@ -7,6 +7,28 @@ import { useRouter } from 'next/navigation'
 import {PlusIcon, ArrowLeftOnRectangleIcon, TrashIcon} from "@heroicons/react/24/solid";
 import {Flashcard, LearningStatistics} from '@/app/lib/definitions';
 
+
+export function Card({
+  title,
+  value,
+}: {
+  title: string;
+  value: number | string;
+}) {
+  return (
+    <div className="rounded-xl bg-gray-50 p-2 shadow-sm">
+      <div className="flex p-4">
+        <h3 className="ml-2 text-sm font-medium">{title}</h3>
+      </div>
+      <p
+        className={`truncate rounded-xl bg-white px-4 py-8 text-center text-2xl`}
+      >
+        {value}
+      </p>
+    </div>
+  );
+}
+
 export default function Page() {
     const [flashcards, setFlashcards] = useState<Flashcard[]>([])
     const [learningStatistics, setLearningStatistics] = useState<LearningStatistics>({
@@ -101,13 +123,6 @@ export default function Page() {
                         </div>
                     </button>
                 </div>
-                <div>
-                    <div>Flashcards created today: {learningStatistics.flashcards_created_today}</div>
-                    <div>Flashcards created last 7 days: {learningStatistics.flashcards_created_last_seven_days}</div>
-                    <div>Learning sessions completed today: {learningStatistics.learning_sessions_completed_today}</div>
-                    <div>Learning sessions completed last 7
-                        days: {learningStatistics.learning_sessions_completed_last_seven_days}</div>
-                </div>
                 <div className={'flex justify-between mt-3'}>
                     <button
                         onClick={onTakeLearningSession}
@@ -123,8 +138,17 @@ export default function Page() {
                         <PlusIcon className="h-5"/>
                     </Link>
                 </div>
+                <div className={'grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mt-3'}>
+                    <Card title="Flashcards created today" value={learningStatistics.flashcards_created_today}/>
+                    <Card title="Flashcards created last 7 days"
+                          value={learningStatistics.flashcards_created_last_seven_days}/>
+                    <Card title="Learning sessions completed today"
+                          value={learningStatistics.learning_sessions_completed_today}/>
+                    <Card title="Learning sessions completed last 7"
+                          value={learningStatistics.learning_sessions_completed_last_seven_days}/>
+                </div>
             </div>
-            <div className={'mt-5 bg-gray-100 rounded-lg p-3'}>
+            <div className={'hidden mt-5 bg-gray-100 rounded-lg p-3 md:table min-w-full'}>
                 <table className={'min-w-full text-gray-900'}>
                     <thead className={'text-left'}>
                     <tr>

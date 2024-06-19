@@ -85,12 +85,12 @@ export default function Page({params}: { params: { id: string } }) {
 
     return (
         <div className={'flex justify-center h-full items-center'}>
-            <div className={'border p-10 rounded-2xl'}>
+            <div className={'border p-10 rounded-2xl w-full md:w-auto'}>
                 <div className={'border-b'}>
                     <div className={'text-center'}>
                         {flashcards[learningFlashcardIndex].front}
                     </div>
-                    <div className="flex gap-4 my-6">
+                    <div className="flex flex-col gap-4 my-6">
                         {flashcardsToShow && flashcardsToShow.map(flashcard =>
                             (<button
                                 key={flashcard.id}
