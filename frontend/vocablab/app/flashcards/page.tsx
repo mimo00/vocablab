@@ -169,8 +169,8 @@ export default function Page() {
                         flashcards ? flashcards.map(flashcard => (
                             <tr className={'w-full py-3 border-b'} key={flashcard.id}>
                                 <td className={'whitespace-nowrap pl-3 py-3'}>{flashcard.front}</td>
-                                <td className={'whitespace-nowrap pl-3 py-3'}>{flashcard.back}</td>
-                                <td className={'whitespace-nowrap pl-3 py-3'}>{flashcard.example}</td>
+                                <td className={'pl-3 py-3'}>{flashcard.back}</td>
+                                <td className={'pl-3 py-3'}>{flashcard.example}</td>
                                 <td className={'whitespace-nowrap pl-3 py-3'}>{formatDateToLocal(flashcard.created)}</td>
                                 <td className={'whitespace-nowrap pl-3 py-3'}>
                                     <button onClick={() => onEdit(flashcard.id)} className={'mr-3'}>
