@@ -15,6 +15,7 @@ class UserMixin(models.Model):
 class Flashcard(UserMixin, models.Model):
     front = models.CharField(max_length=1000)
     back = models.CharField(max_length=1000)
+    example = models.CharField(max_length=1000, blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
 

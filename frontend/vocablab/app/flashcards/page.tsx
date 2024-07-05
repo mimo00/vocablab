@@ -4,7 +4,7 @@ import Link from "next/link";
 import {BASE_URL, formatDateToLocal} from '@/app/lib/utils';
 import {useEffect, useState} from "react";
 import { useRouter } from 'next/navigation'
-import {PlusIcon, ArrowLeftOnRectangleIcon, TrashIcon} from "@heroicons/react/24/solid";
+import {PlusIcon, ArrowLeftOnRectangleIcon, TrashIcon, PencilIcon } from "@heroicons/react/24/solid";
 import {Flashcard, LearningStatistics} from '@/app/lib/definitions';
 
 
@@ -32,6 +32,7 @@ function Card({
 export default function Page() {
     const [flashcards, setFlashcards] = useState<Flashcard[]>([])
     const [learningStatistics, setLearningStatistics] = useState<LearningStatistics>({
+        flashcards_created: 0,
         flashcards_created_last_seven_days: 0,
         flashcards_created_today: 0,
         learning_sessions_completed_last_seven_days: 0,
@@ -40,6 +41,7 @@ export default function Page() {
     const router = useRouter();
 
     useEffect(() => {
+        console.log("USE EFFECT")
         const token = localStorage.getItem('token');
         if (!token) {
             router.push('/');
@@ -112,6 +114,9 @@ export default function Page() {
             console.error('Error:', error);
         });
     }
+    const onEdit = (id: string) => {
+        router.push(`/flashcards/edit/${id}`);
+    }
     return (
         <div>
             <div>
@@ -139,13 +144,13 @@ export default function Page() {
                     </Link>
                 </div>
                 <div className={'grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mt-3'}>
+                    <Card title="Flashcards created"
+                          value={learningStatistics.flashcards_created}/>
                     <Card title="Flashcards created today" value={learningStatistics.flashcards_created_today}/>
                     <Card title="Flashcards created last 7 days"
                           value={learningStatistics.flashcards_created_last_seven_days}/>
                     <Card title="Learning sessions completed today"
                           value={learningStatistics.learning_sessions_completed_today}/>
-                    <Card title="Learning sessions completed last 7 days"
-                          value={learningStatistics.learning_sessions_completed_last_seven_days}/>
                 </div>
             </div>
             <div className={'hidden mt-5 bg-gray-100 rounded-lg p-3 md:table min-w-full'}>
@@ -154,6 +159,7 @@ export default function Page() {
                     <tr>
                         <th className={'font-medium px-4 py-5'}>front</th>
                         <th className={'font-medium px-4 py-5'}>back</th>
+                        <th className={'font-medium px-4 py-5'}>example</th>
                         <th className={'font-medium px-4 py-5'}>created</th>
                         <th className={'font-medium px-4 py-5'}>actions</th>
                     </tr>
@@ -164,8 +170,12 @@ export default function Page() {
                             <tr className={'w-full py-3 border-b'} key={flashcard.id}>
                                 <td className={'whitespace-nowrap pl-3 py-3'}>{flashcard.front}</td>
                                 <td className={'whitespace-nowrap pl-3 py-3'}>{flashcard.back}</td>
+                                <td className={'whitespace-nowrap pl-3 py-3'}>{flashcard.example}</td>
                                 <td className={'whitespace-nowrap pl-3 py-3'}>{formatDateToLocal(flashcard.created)}</td>
                                 <td className={'whitespace-nowrap pl-3 py-3'}>
+                                    <button onClick={() => onEdit(flashcard.id)} className={'mr-3'}>
+                                        <PencilIcon className="h-5"/>
+                                    </button>
                                     <button onClick={() => onDelete(flashcard.id)}>
                                         <TrashIcon className="h-5"/>
                                     </button>
@@ -178,8 +188,25 @@ export default function Page() {
                     </tbody>
                 </table>
             </div>
-            <div className={'flex justify-center mt-6'}>
-
+            <div className="md:hidden mt-5">
+                {
+                    flashcards ? flashcards.map(flashcard => (
+                        <div className="border p-5 rounded-2xl mt-3" key={flashcard.id}>
+                            <div>{flashcard.front}</div>
+                            <div>{flashcard.back}</div>
+                            <div>{flashcard.example}</div>
+                            <div>{formatDateToLocal(flashcard.created)}</div>
+                            <div>
+                                <button onClick={() => onEdit(flashcard.id)} className={'mr-3'}>
+                                    <PencilIcon className="h-5"/>
+                                </button>
+                                <button onClick={() => onDelete(flashcard.id)}>
+                                    <TrashIcon className="h-5"/>
+                                </button>
+                            </div>
+                        </div>
+                    )) : <div>Loading...</div>
+                }
             </div>
         </div>
     );

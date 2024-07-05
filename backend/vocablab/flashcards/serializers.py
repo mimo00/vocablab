@@ -12,7 +12,7 @@ class UserInValidatedDataMixin:
 class FlashcardSerializer(UserInValidatedDataMixin, serializers.ModelSerializer):
     class Meta:
         model = Flashcard
-        fields = ['id', 'front', 'back', 'created']
+        fields = ['id', 'front', 'back', 'example', 'created']
         read_only_fields = ('created', )
 
 

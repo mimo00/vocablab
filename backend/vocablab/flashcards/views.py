@@ -22,6 +22,7 @@ class UserInContexMixin:
 class FlashcardViewSet(
     UserInContexMixin,
     mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     mixins.DestroyModelMixin,

@@ -25,11 +25,13 @@ def get_statistics(user) -> dict:
     learning_session_completed_queryset = LearningSessionCompletedEvent.objects.filter(learning_session__user=user)
     today = datetime.now().date()
     week_ago = today - timedelta(days=7)
+    flashcards_created = flashcard_queryset.count()
     flashcards_created_today = flashcard_queryset.filter(created__date=today).count()
     flashcards_created_last_seven_days = flashcard_queryset.filter(created__date__gte=week_ago).count()
     learning_sessions_completed_today = learning_session_completed_queryset.filter(created__date=today).count()
     learning_sessions_completed_last_seven_days = learning_session_completed_queryset.filter(created__date__gte=week_ago).count()
     return {
+        "flashcards_created": flashcards_created,
         "flashcards_created_today": flashcards_created_today,
         "flashcards_created_last_seven_days": flashcards_created_last_seven_days,
         "learning_sessions_completed_today": learning_sessions_completed_today,

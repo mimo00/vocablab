@@ -1,7 +1,7 @@
 FROM python:3.11-slim
 
-ENV PYTHONUNBUFFERED 1
-ENV PIPENV_NOSPIN 1
+ENV PYTHONUNBUFFERED=1
+ENV PIPENV_NOSPIN=1
 
 RUN apt-get -qq update \
     && python -m pip install  --no-cache-dir pip==24.0 \
