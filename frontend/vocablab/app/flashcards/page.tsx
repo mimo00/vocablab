@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import { useRouter } from 'next/navigation'
 import {PlusIcon, ArrowLeftOnRectangleIcon, TrashIcon, PencilIcon } from "@heroicons/react/24/solid";
 import {Flashcard, LearningStatistics} from '@/app/lib/definitions';
+import { useDebouncedCallback } from 'use-debounce';
 
 
 function Card({
@@ -31,6 +32,7 @@ function Card({
 
 export default function Page() {
     const [flashcards, setFlashcards] = useState<Flashcard[]>([])
+    const [flashcardsFiltered, setFlashcardsFiltered] = useState<Flashcard[]>([])
     const [learningStatistics, setLearningStatistics] = useState<LearningStatistics>({
         flashcards_created: 0,
         flashcards_created_last_seven_days: 0,
@@ -56,6 +58,7 @@ export default function Page() {
             .then((res) => res.json())
             .then((data) => {
                 setFlashcards(data)
+                setFlashcardsFiltered(data)
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -97,6 +100,15 @@ export default function Page() {
             console.error('Error:', error);
         });
     }
+    const handleSearch = useDebouncedCallback((term) => {
+        const lowerCaseTerm = term.toLowerCase();
+        const filtered = flashcards.filter(flashcard =>
+            flashcard.front.toLowerCase().includes(lowerCaseTerm) ||
+            flashcard.back.toLowerCase().includes(lowerCaseTerm) ||
+            flashcard.example.toLowerCase().includes(lowerCaseTerm)
+        );
+        setFlashcardsFiltered(filtered);
+    }, 300);
     const onDelete = (id: string) => {
         const token = localStorage.getItem('token');
         fetch(`${BASE_URL}/flashcards/flashcards/${id}/`, {
@@ -117,17 +129,10 @@ export default function Page() {
     const onEdit = (id: string) => {
         router.push(`/flashcards/edit/${id}`);
     }
+
     return (
         <div>
             <div>
-                <div className={'flex justify-end'}>
-                    <button onClick={onLogout}>
-                        <div className={'flex'}>
-                            <span>Logout</span>
-                            <ArrowLeftOnRectangleIcon className={'h-5'}/>
-                        </div>
-                    </button>
-                </div>
                 <div className={'flex justify-between mt-3'}>
                     <button
                         onClick={onTakeLearningSession}
@@ -135,13 +140,12 @@ export default function Page() {
                     >
                         Learn
                     </button>
-                    <Link
-                        href="/flashcards/create"
-                        className={'flex h-10 items-center rounded-lg bg-stone-900 px-4 text-white'}
-                    >
-                        <span>Create flashcard</span>
-                        <PlusIcon className="h-5"/>
-                    </Link>
+                    <button onClick={onLogout}>
+                        <div className={'flex'}>
+                            <span>Logout</span>
+                            <ArrowLeftOnRectangleIcon className={'h-5'}/>
+                        </div>
+                    </button>
                 </div>
                 <div className={'grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mt-3'}>
                     <Card title="Flashcards created"
@@ -152,6 +156,22 @@ export default function Page() {
                     <Card title="Learning sessions completed today"
                           value={learningStatistics.learning_sessions_completed_today}/>
                 </div>
+            </div>
+            <div className={'flex mt-5'}>
+                <input
+                    className="w-full mr-5 rounded-md border border-gray-200 text-sm  placeholder:text-gray-500"
+                    placeholder={'Search flashcards'}
+                    onChange={(e) => {
+                      handleSearch(e.target.value);
+                    }}
+                />
+                <Link
+                    href="/flashcards/create"
+                    className={'flex h-10 items-center rounded-lg bg-stone-900 px-4 text-white'}
+                >
+                    <span className={'whitespace-nowrap'}>Create flashcard</span>
+                    <PlusIcon className="h-5"/>
+                </Link>
             </div>
             <div className={'hidden mt-5 bg-gray-100 rounded-lg p-3 md:table min-w-full'}>
                 <table className={'min-w-full text-gray-900'}>
@@ -166,7 +186,7 @@ export default function Page() {
                     </thead>
                     <tbody className={'bg-white'}>
                     {
-                        flashcards ? flashcards.map(flashcard => (
+                        flashcards ? flashcardsFiltered.map(flashcard => (
                             <tr className={'w-full py-3 border-b'} key={flashcard.id}>
                                 <td className={'whitespace-nowrap pl-3 py-3'}>{flashcard.front}</td>
                                 <td className={'pl-3 py-3'}>{flashcard.back}</td>
