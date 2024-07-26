@@ -87,10 +87,10 @@ export default function Page({params}: { params: { id: string } }) {
         <div className={'flex justify-center h-full items-center'}>
             <div className={'md:border md:p-10 rounded-2xl w-full md:w-auto'}>
                 <div className={'border-b'}>
-                    <div className={'text-center text-xl'}>
+                    <div className={'text-center text-base md:text-xl'}>
                         {flashcards[learningFlashcardIndex].front}
                     </div>
-                    <div className={clsx('text-center text-lg italic', {'invisible': !isRightAnswer()})}>
+                    <div className={clsx('text-center text-xs md:text-xl italic', {'invisible': !isRightAnswer()})}>
                         {flashcards[learningFlashcardIndex].example}
                     </div>
                     <div className="flex flex-col gap-4 my-6">
@@ -99,7 +99,7 @@ export default function Page({params}: { params: { id: string } }) {
                                 key={flashcard.id}
                                 style={{backgroundColor: getColor(flashcard.id)}}
                                 onClick={() => handleClick(flashcard.id)}
-                                className={'border p-5 rounded-xl text-sm md:text-lg'}
+                                className={'border p-5 rounded-xl text-xs md:text-lg'}
                             >
                                 {flashcard.back}
                             </button>)
