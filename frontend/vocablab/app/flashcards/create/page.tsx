@@ -35,7 +35,7 @@ export default function Page() {
         });
     }
     const initialFlashcard: Flashcard = {
-        front: "", back: "", created: "", example: "",  id: ""
+        front: "", back: "", created: "", example: "", learnt: false,  id: ""
     }
     return (
         <div className={'flex justify-center h-full items-center'}>

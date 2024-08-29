@@ -13,7 +13,8 @@ export default function Page({params}: { params: { id: string } }) {
         created: "",
         example: "",
         front: "",
-        id: ""
+        id: "",
+        learnt: false,
     })
     const router = useRouter()
     const token = localStorage.getItem('token');
