@@ -9,6 +9,7 @@ from flashcards.tests.factories import FlashcardFactory, UserFactory, LearningSe
 
 @pytest.mark.django_db
 class TestFlashcardViewSet:
+    DETAILS_VIEW_NAME = "flashcards:flashcard-detail"
     LIST_VIEW_NAME = "flashcards:flashcard-list"
 
     def test_post(self, api_client):
@@ -35,6 +36,7 @@ class TestFlashcardViewSet:
         assert result["front"] == flashcard.front
         assert result["back"] == flashcard.back
         assert result["created"] == mock.ANY  # TODO set dt format
+        assert result["learnt"] == flashcard.learnt
 
     def test_list_return_only_users_flashcards(self, api_client, user, other_user):
         FlashcardFactory(user=user)
@@ -46,6 +48,16 @@ class TestFlashcardViewSet:
         assert response.status_code == status.HTTP_200_OK
         results = response.json()
         assert len(results) == 1
+
+    def test_patch_learnt(self, api_client):
+        flashcard = FlashcardFactory(learnt=False)
+
+        url = reverse(self.DETAILS_VIEW_NAME, kwargs={"pk": flashcard.pk})
+        response = api_client.patch(path=url, data={"learnt": True})
+
+        assert response.status_code == status.HTTP_200_OK
+        result = response.json()
+        assert result["learnt"] is True
 
 
 @pytest.mark.django_db

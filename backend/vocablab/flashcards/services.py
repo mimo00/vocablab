@@ -11,7 +11,7 @@ class InsufficientFlashcardsError(Exception):
 
 
 def get_flashcards_for_learning_session(user, size=4) -> List[Flashcard]:
-    queryset = Flashcard.objects.filter(user=user)
+    queryset = Flashcard.objects.filter(user=user).exclude(learnt=True)
     pks = list(queryset.values_list('pk', flat=True))
     if len(pks) < size:
         raise InsufficientFlashcardsError(f"Only {len(pks)} flashcards available, but {size} were requested.")

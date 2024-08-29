@@ -4,6 +4,7 @@ export interface Flashcard {
   back: string;
   example: string;
   created: string;
+  learnt: boolean;
 }
 
 export interface LearningStatistics {

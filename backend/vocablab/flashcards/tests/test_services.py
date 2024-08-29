@@ -1,6 +1,6 @@
 import pytest
 
-from flashcards.services import get_flashcards_for_learning_session
+from flashcards.services import get_flashcards_for_learning_session, InsufficientFlashcardsError
 from flashcards.tests.factories import FlashcardFactory, UserFactory
 
 
@@ -8,7 +8,7 @@ from flashcards.tests.factories import FlashcardFactory, UserFactory
 class TestGetFlashcardsForLearningSession:
     def test_success(self):
         user = UserFactory()
-        flashcards = FlashcardFactory.create_batch(4, user=user)
+        flashcards = FlashcardFactory.create_batch(4, user=user, learnt=False)
 
         result = get_flashcards_for_learning_session(user)
 
@@ -25,3 +25,17 @@ class TestGetFlashcardsForLearningSession:
 
         result = get_flashcards_for_learning_session(user_1)
         assert len(set([flashcard.user for flashcard in result])) == 1
+
+    def test_insufficient_flashcards(self):
+        user = UserFactory()
+        FlashcardFactory(user=user)
+
+        with pytest.raises(InsufficientFlashcardsError):
+            get_flashcards_for_learning_session(user)
+
+    def test_learnt_flashcard(self):
+        user = UserFactory()
+        FlashcardFactory.create_batch(4, user=user, learnt=True)
+
+        with pytest.raises(InsufficientFlashcardsError):
+            get_flashcards_for_learning_session(user)

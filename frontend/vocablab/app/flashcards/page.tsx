@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import {PlusIcon, ArrowLeftOnRectangleIcon, TrashIcon, PencilIcon } from "@heroicons/react/24/solid";
 import {Flashcard, LearningStatistics} from '@/app/lib/definitions';
 import { useDebouncedCallback } from 'use-debounce';
+import { Switch } from '@headlessui/react';
 
 
 function Card({
@@ -109,6 +110,26 @@ export default function Page() {
         );
         setFlashcardsFiltered(filtered);
     }, 300);
+    const handleToggleChange = (id: string, learnt: boolean) => {
+        const token = localStorage.getItem('token');
+        fetch(`${BASE_URL}/flashcards/flashcards/${id}/`, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Token ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ learnt }),
+        })
+        .then(response => response.json())
+        .then(updatedFlashcard => {
+          setFlashcardsFiltered(flashcardsFiltered.map(flashcard =>
+            flashcard.id === id ? updatedFlashcard : flashcard
+          ));
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      };
     const onDelete = (id: string) => {
         const token = localStorage.getItem('token');
         fetch(`${BASE_URL}/flashcards/flashcards/${id}/`, {
@@ -181,6 +202,7 @@ export default function Page() {
                         <th className={'font-medium px-4 py-5'}>back</th>
                         <th className={'font-medium px-4 py-5'}>example</th>
                         <th className={'font-medium px-4 py-5'}>created</th>
+                        <th className={'font-medium px-4 py-5'}>learnt</th>
                         <th className={'font-medium px-4 py-5'}>actions</th>
                     </tr>
                     </thead>
@@ -192,6 +214,18 @@ export default function Page() {
                                 <td className={'pl-3 py-3'}>{flashcard.back}</td>
                                 <td className={'pl-3 py-3'}>{flashcard.example}</td>
                                 <td className={'whitespace-nowrap pl-3 py-3'}>{formatDateToLocal(flashcard.created)}</td>
+                                <td className={'whitespace-nowrap pl-3 py-3'}>
+                                    <Switch
+                                        checked={flashcard.learnt}
+                                        onChange={() => handleToggleChange(flashcard.id, !flashcard.learnt)}
+                                        className={`${flashcard.learnt ? 'bg-stone-900' : 'bg-gray-200'} relative inline-flex h-6 w-11 items-center rounded-full`}
+                                    >
+                                        <span className="sr-only">Toggle learnt</span>
+                                        <span
+                                            className={`${flashcard.learnt ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform bg-white rounded-full`}
+                                        />
+                                    </Switch>
+                                </td>
                                 <td className={'whitespace-nowrap pl-3 py-3'}>
                                     <button onClick={() => onEdit(flashcard.id)} className={'mr-3'}>
                                         <PencilIcon className="h-5"/>

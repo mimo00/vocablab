@@ -5,7 +5,7 @@ from flashcards.models import Flashcard, LearningSession, LearningSessionComplet
 
 @admin.register(Flashcard)
 class FlashcardAdmin(admin.ModelAdmin):
-    list_display = ["front", "back", "created"]
+    list_display = ["front", "back", "created", "learnt"]
 
 
 @admin.register(LearningSession)
