@@ -4,6 +4,7 @@ import {redirect, useRouter} from "next/navigation";
 import {BASE_URL} from "@/app/lib/utils";
 import {useEffect, useState} from "react";
 import {Flashcard} from "@/app/lib/definitions";
+import Form from "@/app/ui/flashcards/flashcard-form";
 
 
 export default function Page({params}: { params: { id: string } }) {
@@ -61,49 +62,11 @@ export default function Page({params}: { params: { id: string } }) {
     };
     return (
         <div className={'flex justify-center h-full items-center'}>
-            <div className={'border p-10 rounded-2xl'}>
+            <div className={'border p-10 rounded-2xl min-w-[500px]'}>
                 <div className="text-center">
                     Edit flashcard
                 </div>
-                <form action={onSubmit} className={'mt-3'}>
-                    <div className='mb-2'>
-                        <input
-                            id="front"
-                            value={flashcard.front}
-                            name="front"
-                            type="text"
-                            placeholder="Front"
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className='mb-2'>
-                        <input
-                            id="back"
-                            value={flashcard.back}
-                            name="back"
-                            type="text"
-                            placeholder="Back"
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <div className='mb-2'>
-                        <input
-                            id="example"
-                            value={flashcard.example}
-                            name="example"
-                            type="text"
-                            placeholder="Example"
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                    <button className={'flex justify-center my-3 rounded-lg bg-stone-900 text-white py-3 w-full'}
-                            type="submit">
-                        Edit
-                    </button>
-                    <div className={'text-center'}>
-                        <Link href="/flashcards">Cancel</Link>
-                    </div>
-                </form>
+                <Form onSubmit={onSubmit} initialFlashcard={flashcard}/>
             </div>
         </div>
     );

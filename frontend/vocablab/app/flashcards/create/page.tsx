@@ -2,6 +2,8 @@
 import Link from "next/link";
 import {redirect, useRouter} from "next/navigation";
 import {BASE_URL} from "@/app/lib/utils";
+import Form from '@/app/ui/flashcards/flashcard-form';
+import {Flashcard} from "@/app/lib/definitions";
 
 
 export default function Page() {
@@ -32,45 +34,16 @@ export default function Page() {
             console.error('Error:', error);
         });
     }
+    const initialFlashcard: Flashcard = {
+        front: "", back: "", created: "", example: "",  id: ""
+    }
     return (
         <div className={'flex justify-center h-full items-center'}>
-            <div className={'border p-10 rounded-2xl'}>
+            <div className={'border p-10 rounded-2xl min-w-[500px]'}>
                 <div className="text-center">
                     Create flashcard
                 </div>
-                <form action={onSubmit} className={'mt-3'}>
-                    <div className='mb-2'>
-                        <input
-                            id="front"
-                            name="front"
-                            type="text"
-                            placeholder="Front"
-                        />
-                    </div>
-                    <div className='mb-2'>
-                        <input
-                            id="back"
-                            name="back"
-                            type="text"
-                            placeholder="Back"
-                        />
-                    </div>
-                    <div className='mb-2'>
-                        <input
-                            id="example"
-                            name="example"
-                            type="text"
-                            placeholder="Example"
-                        />
-                    </div>
-                    <button className={'flex justify-center my-3 rounded-lg bg-stone-900 text-white py-3 w-full'}
-                            type="submit">
-                        Create
-                    </button>
-                    <div className={'text-center'}>
-                        <Link href="/flashcards">Cancel</Link>
-                    </div>
-                </form>
+                <Form onSubmit={onSubmit} initialFlashcard={initialFlashcard}/>
             </div>
         </div>
     );
