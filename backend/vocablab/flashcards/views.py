@@ -9,7 +9,7 @@ from flashcards.serializers import FlashcardSerializer, LearningSessionSerialize
     LearningSessionCompletedEventSerializer
 from rest_framework import filters
 
-from flashcards.services import get_flashcards_for_learning_session, InsufficientFlashcardsError, get_statistics
+from flashcards.services import get_flashcards_for_learning_session, InsufficientFlashcardsError, get_statistics, download_pronunciation
 
 
 class UserInContexMixin:
@@ -36,6 +36,9 @@ class FlashcardViewSet(
     def get_queryset(self):
         return Flashcard.objects.filter(user=self.request.user)
 
+    def perform_create(self, serializer):
+        flashcard: Flashcard = serializer.save(user=self.request.user)
+        download_pronunciation(flashcard)
 
 class LearningSessionViewSet(
     UserInContexMixin,

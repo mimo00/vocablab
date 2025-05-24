@@ -9,6 +9,8 @@ djangorestframework = "~=3.15.0"
 django-cors-headers = "*"
 djoser = "*"
 django-environ = "*"
+beautifulsoup4 = "*"
+django-storages = {extras = ["s3"], version = "*"}
 
 [dev-packages]
 pytest = "~=8.1"

@@ -4,7 +4,7 @@ import Link from "next/link";
 import {BASE_URL, formatDateToLocal} from '@/app/lib/utils';
 import {useEffect, useState} from "react";
 import { useRouter } from 'next/navigation'
-import {PlusIcon, ArrowLeftOnRectangleIcon, TrashIcon, PencilIcon } from "@heroicons/react/24/solid";
+import {PlusIcon, ArrowLeftOnRectangleIcon, TrashIcon, PencilIcon, PlayIcon } from "@heroicons/react/24/solid";
 import {Flashcard, LearningStatistics} from '@/app/lib/definitions';
 import { useDebouncedCallback } from 'use-debounce';
 import { Switch } from '@headlessui/react';
@@ -227,6 +227,16 @@ export default function Page() {
                                     </Switch>
                                 </td>
                                 <td className={'whitespace-nowrap pl-3 py-3'}>
+                                     <button onClick={() => {
+                                        if (flashcard.pronunciation) {
+                                            const audio = new Audio(flashcard.pronunciation);
+                                            audio.play().catch(error => console.error('Error playing audio:', error));
+                                        } else {
+                                            alert('No pronunciation link available');
+                                        }
+                                    }} className={'mr-3'}>
+                                        <PlayIcon className="h-5"/>
+                                    </button>
                                     <button onClick={() => onEdit(flashcard.id)} className={'mr-3'}>
                                         <PencilIcon className="h-5"/>
                                     </button>

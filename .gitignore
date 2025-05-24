@@ -1,2 +1,5 @@
 .idea/
 notes.txt
+.env
+backend/vocablab/media/
+*.sqlite3

@@ -18,6 +18,7 @@ class Flashcard(UserMixin, models.Model):
     example = models.CharField(max_length=1000, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     learnt = models.BooleanField(default=False)
+    pronunciation = models.FileField(upload_to="pronunciations/", blank=True, null=True)
 
 
 class LearningSession(UserMixin, models.Model):

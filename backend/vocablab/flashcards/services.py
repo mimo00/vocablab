@@ -1,8 +1,15 @@
+import tempfile
 from datetime import datetime, timedelta
 from typing import List
 
+import requests
+import logging
+
 from flashcards.models import Flashcard, LearningSessionCompletedEvent
 from random import choice, sample
+from bs4 import BeautifulSoup
+
+logger = logging.getLogger(__name__)
 
 
 class InsufficientFlashcardsError(Exception):
@@ -37,3 +44,26 @@ def get_statistics(user) -> dict:
         "learning_sessions_completed_today": learning_sessions_completed_today,
         "learning_sessions_completed_last_seven_days": learning_sessions_completed_last_seven_days,
     }
+
+
+def download_pronunciation(flashcard: Flashcard):
+    CAMBRIDGE_DICTIONARY_BASE_URL = "https://dictionary.cambridge.org"
+    url = f"{CAMBRIDGE_DICTIONARY_BASE_URL}/dictionary/english/{flashcard.front}"
+    logger.info("Downloading pronunciation for flashcard %s, %s", flashcard.pk, flashcard.front)
+    logger.info("Downloading pronunciation from %s", url)
+    headers = requests.utils.default_headers()
+    DEFAULT_REQUESTS_HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'}
+    headers.update(DEFAULT_REQUESTS_HEADERS)
+    response = requests.get(url, headers=headers)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    pronunciation_section = soup.find('span', class_='uk dpron-i')
+    logger.info(pronunciation_section)
+    if pronunciation_section:
+        source_element = pronunciation_section.find('source', type='audio/mpeg')
+        url = source_element.get("src")
+        logger.info(f"Pronunciation for '{source_element}': {url}")
+    url = f"{CAMBRIDGE_DICTIONARY_BASE_URL}/{url}"
+    response = requests.get(url, headers=headers)
+    with tempfile.NamedTemporaryFile() as tmp:
+        tmp.write(response.content)
+        flashcard.pronunciation.save(f"{flashcard.front}.mp3", tmp)

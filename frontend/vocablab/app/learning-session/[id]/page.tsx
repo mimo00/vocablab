@@ -5,6 +5,8 @@ import {useRouter} from 'next/navigation'
 import Link from "next/link";
 import clsx from 'clsx';
 import {Flashcard} from "@/app/lib/definitions";
+import { PlayIcon } from "@heroicons/react/24/solid";
+
 
 export default function Page({params}: { params: { id: string } }) {
     const [flashcards, setFlashcards] = useState<Flashcard[]>([])
@@ -89,6 +91,17 @@ export default function Page({params}: { params: { id: string } }) {
                 <div className={'border-b'}>
                     <div className={'text-center text-base md:text-xl'}>
                         {flashcards[learningFlashcardIndex].front}
+                        <button onClick={() => {
+                            const flashcard = flashcards[learningFlashcardIndex];
+                            if (flashcard.pronunciation) {
+                                const audio = new Audio(flashcard.pronunciation);
+                                audio.play().catch(error => console.error('Error playing audio:', error));
+                            } else {
+                                alert('No pronunciation link available');
+                            }
+                        }} className={'mr-3'}>
+                            <PlayIcon className="h-5"/>
+                        </button>
                     </div>
                     <div className={clsx('text-center text-xs md:text-xl italic', {'invisible': !isRightAnswer()})}>
                         {flashcards[learningFlashcardIndex].example}

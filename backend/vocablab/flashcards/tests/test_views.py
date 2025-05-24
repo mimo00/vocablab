@@ -35,6 +35,7 @@ class TestFlashcardViewSet:
         assert result["id"] == flashcard.id
         assert result["front"] == flashcard.front
         assert result["back"] == flashcard.back
+        assert result["pronunciation"] is None
         assert result["created"] == mock.ANY  # TODO set dt format
         assert result["learnt"] == flashcard.learnt
 

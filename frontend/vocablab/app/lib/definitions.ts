@@ -5,6 +5,7 @@ export interface Flashcard {
   example: string;
   created: string;
   learnt: boolean;
+  pronunciation: string;
 }
 
 export interface LearningStatistics {

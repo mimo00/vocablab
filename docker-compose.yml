@@ -10,8 +10,7 @@ services:
       - "8000:8000"
     volumes:
       - ./backend/vocablab:/app
-    environment:
-      - DJANGO_DEBUG=True
+    env_file: ".env"
   frontend:
     image: vocablab-frontend
     build:
