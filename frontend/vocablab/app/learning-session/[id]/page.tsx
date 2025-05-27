@@ -42,7 +42,7 @@ export default function Page({params}: { params: { id: string } }) {
         if (selectedId != flashcardId)
             return 'white';
         else {
-            return isRightAnswer() ? 'green' : 'red'
+            return isRightAnswer() ? 'lightgreen' : '#ffcccc'
         }
     }
     const shuffleArray = (array: Flashcard[]) => {
